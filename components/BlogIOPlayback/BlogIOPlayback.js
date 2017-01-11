@@ -53,8 +53,16 @@ export default class BlogIOPlayback extends React.Component {
             }),
         })
             .then((response) => response.json())
-            .then((articleText) => this.setState({articleText: articleText}))
-            .catch((error) => this.setState({articleText: "error"}))
+            .then((articleText) => {
+                if (typeof articleText != 'string') {
+                    throw Error("No Text")
+                } else {
+                    this.setState({ articleText })
+                }
+            })
+            .catch((error) => {
+                this.setState({articleText: "Sorry, there was a problem processing this article, and we're working on it.."})
+            })
 
         // setup the lock screen controls
         MusicControl.enableBackgroundMode(true);
